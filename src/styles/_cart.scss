@@ -1,0 +1,126 @@
+table {
+  border-collapse: collapse;
+  width: 90%;
+margin: auto;
+  thead{
+    height: 3em;
+
+    background-color: var(--primary-color);
+    color: white;
+    th{
+        padding-left: 1rem;
+    }
+  }
+}
+.title-row {
+  td {
+    padding: 0.3rem;
+    //  border: none;
+
+    &:first-child {
+      // width: 20%;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      h2 {
+        font-size: 1.3rem;
+      }
+    }
+
+    &:last-child{
+        button{
+            background: none;
+            color: tomato;
+            text-transform: capitalize;
+            border: none;
+        }
+    }
+  }
+  img {
+    width: 4rem !important;
+  }
+}
+.counter {
+  width: fit-content;
+  margin: auto;
+  span {
+    margin: 0 0.3em;
+    font-weight: 700;
+  }
+  button {
+    border: none;
+
+    height: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.4rem;
+  }
+}
+
+
+.subtotal{
+    display: grid;
+    
+    width: 20rem;
+    margin: 1rem;
+    margin-left: 3rem;
+    height: 15rem;
+
+    box-shadow: 0 0 5px gray;
+
+
+    div{
+        display: flex;
+        align-items: center;
+        padding: 1em;
+        border-bottom: 1px solid var(--primary-color);
+       
+
+
+        &:last-child{
+            padding: 1em;
+        }
+        button{
+            background-color: var(--primary-color);
+        color: white;
+        width: 100%;
+        padding: .4rem 0;
+        border-radius: 5px;
+      
+        }
+    }
+    }
+
+    .empty-cart{
+      width: 40%;
+      height: 20rem;
+      border-radius: 10px;
+      margin: 0 auto;
+      box-shadow: 0 0 5px grey;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
+  font-size: 2rem;
+  margin-top: 1em;
+  }
+
+.favorite{
+  margin-top: 1em ;
+  display: grid;
+  place-items: center;
+
+  .no-item {
+    text-align: center;
+    padding: 1rem 0;
+  }
+}
+
+.cart{
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 1rem;
+  border-radius: 5px;
+
+}
+

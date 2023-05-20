@@ -1,0 +1,151 @@
+@use "hero";
+@use "trusted";
+@use "benefits";
+@use "product";
+@use "footer";
+@use "cart";
+
+@use "account";
+@use "admin";
+
+@use "singleproduct";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+:root {
+  --primary-color: #1f2c3a;
+  --primary-color-fade: #1f2c3aaf;
+  --secondary-color: #764abc;
+  --secondary-color1: #764abc8a;
+  --white: #fefefe;
+}
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+  font-family: "Open Sans", sans-serif;
+}
+
+
+
+nav {
+  display: flex;
+  box-shadow: 0 0 8px var(--primary-color-fade);
+  align-items: center;
+  position: fixed;
+  z-index: 10;
+  background-color: #fefefe;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 2rem;
+  .logo {
+    width: 5rem;
+  }
+  justify-content: space-between;
+  ul {
+    display: flex;
+    width: 60vw;
+    align-items: center;
+    justify-content: space-between;
+
+    li {
+      &:is(:last-child, :nth-child(5)) {
+        margin-left: auto;
+        a {
+          background-color: var(--secondary-color);
+          color: white;
+        }
+
+        &:last-child {
+          margin-left: 2rem;
+
+          a {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            span {
+              margin-left: 0.4rem;
+              background-color: #1f2c3a;
+              padding: 5px 10px;
+              border-radius: 10px;
+            }
+          }
+        }
+      }
+    }
+    a {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+      padding: 1.2rem 2rem;
+      border-radius: 1rem;
+    }
+  }
+}
+
+.active {
+  color: var(--secondary-color);
+  font-weight: 700;
+}
+
+.menu {
+  display: none;
+}
+
+@media only screen and (max-width: 640px) {
+  nav {
+    position: relative;
+    ul {
+      flex-direction: column;
+      position: absolute;
+      top: 85px;
+      left: 0;
+      background-color: #1f2c3a;
+      width: 100%;
+      z-index: 2;
+      height: 12rem;
+      padding: 1em 0;
+      li {
+        width: 100%;
+        &:last-child {
+          margin-left: 0rem !important;
+          a {
+            background-color: transparent;
+            color: white;
+          }
+          .active {
+            background-color: #764abc;
+            color: white;
+          }
+        }
+      }
+      a {
+        color: white;
+        padding: 1rem;
+        width: 100%;
+        border-radius: 0;
+        margin-left: 0;
+        display: block;
+      }
+
+      .active {
+        background-color: #764abc;
+        color: white;
+      }
+    }
+  }
+.collapse{
+  display: none;
+}
+  .menu {
+    display: inline;
+    background: none;
+    font-size: 1.8rem;
+    border: none;
+    margin-left: 1rem;
+  }
+}
+
+
+.page{
+  margin-top: 6rem;
+}

@@ -1,0 +1,13 @@
+@use 'card';
+
+.product-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(300px - 1rem), 1fr));
+    gap: 1rem;
+
+    padding: 2rem;
+}
+
+.filter{
+    padding: 2rem;
+}

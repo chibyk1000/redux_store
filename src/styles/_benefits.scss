@@ -1,0 +1,60 @@
+.benefits {
+    background-color: #a992cd1d;
+    padding: 5rem 0;
+
+    header{
+    
+width: 40vw;
+margin: 1rem auto;
+            h2{
+                font-size: 3rem;
+                text-align: center;
+                margin: 2rem 0;
+            }
+            p{
+                text-align: center;
+                line-height: 2rem;
+
+            }
+        
+    }
+
+    article{
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   
+      width: 90dvw;
+      gap: 1rem;
+     
+      margin: auto;
+      
+      h3 {
+        color: var(--primary-color);
+        text-align: center;
+        margin: 1rem 0;
+    
+        font-size: 1.5rem;
+      }
+     p{
+        text-align: center;
+     }
+
+      
+      div{
+        box-shadow: 0  0 5px #d3d2d2;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 1rem;
+
+      
+        img{
+            width: 5rem;
+            margin: auto;
+            display: block;
+        }
+      }
+    
+     
+  }
+}

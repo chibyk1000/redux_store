@@ -1,0 +1,52 @@
+.account{
+
+    display: grid;
+    place-items: center;
+    min-height: calc(100dvh - 8rem);
+
+    form{
+        width: 40dvw ;
+        background-color: var(--primary-color-fade);
+        padding: 1rem;
+        h1, p{
+            color: white;
+            margin: 1rem 0 ;
+
+        
+        }
+
+span{
+    color: white;
+    margin-right: 1em;
+}
+        p >a{
+            color: white;
+            font-style: italic;
+            text-decoration: underline;
+        }
+
+        .form-control{
+            margin: 1em 0;
+        }
+        input:not(input[type="file"]){
+            display: block;
+            padding-left: 5px;
+            &::placeholder{
+
+            }
+width: 100%;
+border-radius: 5px;
+margin: .4em 0 ;
+height: 1.9rem;
+        }
+
+        button{
+            float: right;
+            padding: .2rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 5px;
+        }
+    }
+}
+
