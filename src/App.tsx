@@ -106,10 +106,10 @@ const App = () => {
     dispatch(fetchAllProducts()) 
   }, []);
   return (
-    <div>
+    <>
       <RouterProvider router={router} />
       <ToastContainer/>
-    </div>
+    </>
   );
 }
 

@@ -58,3 +58,13 @@ margin: 1rem auto;
      
   }
 }
+
+
+@media screen  and (max-width: 768px){
+  .benefits{
+    header{
+      width: 90dvw;
+      margin-bottom: 3rem;
+    }
+  }
+}

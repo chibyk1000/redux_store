@@ -7,8 +7,10 @@ import { HiShoppingCart } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { BsFilter } from 'react-icons/bs'
 import { addToCart } from "../redux/reducers/cartReducers";
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Card, CardActionArea,CardMedia, CardContent, Typography, CardActions, IconButton, Button } from "@mui/material";
 import { fetchAllProducts, sortProductsByCategory, sortProductsByPrice } from "../redux/reducers/productReducers";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShareIcon from "@mui/icons-material/Share";
 import { saveItem } from "../redux/reducers/saveReducers";
 const Product = () => {
   const {products} = useAppSelector((state) => state.productsReducer);
@@ -54,45 +56,50 @@ const Product = () => {
           </Select>
         </FormControl>
       </div>
-      <div className="product-container">
+      <Box sx={{
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+      gap:'1rem'
+      }}>
         {products.map((product) => {
           return (
-            <div className="product-card">
-              <Link to={`/product/${product.id}`}>
-                <div className="product-tumb">
-                  <img src={product.images[0]} alt="" />
-                </div>
-                <div className="product-details">
-                  <span className="product-catagory">
-                    {product.category.name}
-                  </span>
-                  <h4>
-                    <a href="">{product.title}</a>
-                  </h4>
-                  <p>
-                    {product.description.length > 40
-                      ? product.description.substring(0, 40) + "..."
-                      : product.description }
-                  </p>
-                  <div className="product-bottom-details">
-                    <div className="product-price">
-                      ${new Intl.NumberFormat("en-US").format(product.price)}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-              <div className="product-links">
-                <button onClick={() => dispatch(addToCart(product))} className="add-btn">
-                  <HiShoppingCart />
-                </button>
-                <button onClick={() => dispatch(saveItem(product))}>
-                  <FaHeart />
-                </button>
-              </div>
-            </div>
-          );
+            <Card sx={{ maxWidth: 345, position: "relative" }}>
+              <CardMedia
+                component="img"
+                height="194"
+                image={product.images[0]}
+                alt={product.title}
+              />
+              <CardContent sx={{ height: "8rem" }}>
+                <Typography variant="body2" color="text.secondary">
+                  ${product.price}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {product.description}
+                </Typography>
+              </CardContent>
+              <IconButton
+                aria-label="add to favorites"
+                sx={{ position: "absolute", top: 0 }}
+              >
+                <FavoriteIcon />
+              </IconButton>
+              <CardActions disableSpacing>
+                <Button
+                  endIcon={<HiShoppingCart />}
+                  sx={{
+                    backgroundColor: "#fbb72c",
+                    width: "100%",
+                    color: "white",
+                  }}
+                >
+                  Add To Cart
+                </Button>
+              </CardActions>
+            </Card>
+          ); 
         })}
-      </div>
+      </Box>
     </section>
   );
 };
