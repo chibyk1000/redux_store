@@ -1,6 +1,8 @@
+import { Button } from "@mui/material";
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 const Hero = () => {
+  const navigate =  useNavigate()
   return (
     <section className="hero">
       <div>
@@ -13,7 +15,7 @@ const Hero = () => {
           vero blanditiis quo vitae voluptate quisquam enim.{" "}
         </article>
 
-        <button>Start shopping</button>
+        <Button variant="contained" color="warning" onClick={()=>navigate('/products')}>Start shopping</Button>
       </div>
 
       <div>

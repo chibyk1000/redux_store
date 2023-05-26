@@ -1,67 +1,126 @@
-import {useRef, FormEvent, useEffect} from 'react'
-import useAppSelector from '../hooks/useAppSelector';
+import { FormEvent, useEffect, useState } from "react";
+
+import useAppSelector from "../hooks/useAppSelector";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../redux/reducers/userReducer";
 
 const Profile = () => {
-const user =  useAppSelector((state)=>state.userReducers)
-  const nameRef = useRef<HTMLInputElement | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
-  const fileRef = useRef<HTMLInputElement | null>(null);
-  const roleRef = useRef<HTMLSelectElement | null>(null); 
-
-  const handleSubmit = (event:FormEvent) => {
-    
-  }
-
-  console.log(user );
+  const { user } = useAppSelector((state) => state.userReducers);
+  const dispatch  = useDispatch<any>() 
   
+  const [data, setData] = useState({ name: "", email: "", role: "", id: 0 });
+  
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault()
 
+    dispatch(updateUser(data))
+  };
   useEffect(() => {
-    
-   
-       
-      nameRef.current!.value =user.user.name as string
-      emailRef.current!.value =user.user.email as string
-      roleRef.current!.value =user.user.role as string
-      nameRef.current!.value =user.user.name as string
-      
-  
-    
-},[])
+    if (user) {
+      setData({
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        id: user.id,
+      });
+    }
+  }, [user]);
   return (
-    <div className="account page">
-      <form action="" onSubmit={handleSubmit}>
-        <h1>Profile</h1>
-        <input type="text" name="name" placeholder="name" ref={nameRef} />
-        <input
-          type="text"
-          name="email"
-          placeholder="Email Address"
-          ref={emailRef}
-        />
-        <input
-          type="password"
-          name="password"
-          id=""
-          placeholder="Password"
-          ref={passwordRef}
-        />
-        <div className="form-control">
-          <span>Role: </span>
-          <select name="" id="" ref={roleRef}>
-            <option value="customer">customer</option>
-            <option value="admin">admin</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <span>Image: </span>
-          <input type="file" ref={fileRef} />
-        </div>
-        <button>Update</button>
-     
-      </form>
-    </div>
-  );
-}
+    // <div className="account page">
+    <Box
+      component="form"
+      noValidate
+      onSubmit={handleSubmit}
+      sx={{ mt: 1, width: { xs: "95%", md: "50%" } }}
+    >
+      <Grid container spacing={2}>
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ color: "var(--primary-color)" }}
+        >
+          Update Profile
+        </Typography>
+        <Grid item xs={12}>
+          <TextField
+            autoComplete="given-name"
+            name="fullname"
+            required
+            fullWidth
+            id="Full Name"
+            value={data.name}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setData({ ...data, name: event.target.value })
+            }
+            label="First Name"
+            autoFocus
+          />
+        </Grid>
 
-export default Profile
+        <Grid item xs={12}>
+          <TextField
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            placeholder="email"
+            name="email"
+            value={data.email}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setData({ ...data, email: event.target.value })
+            }
+            autoComplete="email"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <FormControl sx={{ width: "100%" }}>
+            <InputLabel id="demo-simple-select-label">Role </InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              fullWidth
+              label="Role"
+              placeholder="Role"
+              disabled
+              value={data.role}
+            >
+              <MenuItem value="admin">admin</MenuItem>
+              <MenuItem value="customer">customer</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{
+          mt: 3,
+          mb: 2,
+          backgroundColor: "var(--secondary-color)",
+          "&:hover": {
+            backgroundColor: "var(--secondary-color)",
+          },
+        }}
+      >
+        Update profile
+      </Button>
+    </Box>
+
+    // </div>
+  );
+};
+
+export default Profile;

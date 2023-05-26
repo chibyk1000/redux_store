@@ -28,7 +28,7 @@
         }
 
         button{
-            background-color: #fbb72c; 
+            background-color: var(--secondary-color); 
             color: white;
             font-size: 1.4rem;
             border: none;
@@ -37,7 +37,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.2rem 0;
+            padding: .8rem 0;
         }
         article{
             display: flex;

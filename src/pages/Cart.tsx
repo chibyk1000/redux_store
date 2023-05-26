@@ -3,10 +3,11 @@ import useAppSelector from "../hooks/useAppSelector";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { incrementQuantity, decrementQuantity, removeFromCart } from "../redux/reducers/cartReducers";
-import { removeItem } from "../redux/reducers/saveReducers";
+
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography , Box} from "@mui/material";
 const Cart = () => {
   const cart = useAppSelector((state) => state.cartReducers)
-  const savedItems  =  useAppSelector((state)=> state.saveReducers)
+  
   const dispatch = useAppDispatch()
   
     const getTotalPrice = () => {
@@ -24,82 +25,163 @@ const Cart = () => {
         (accumulator, item) => accumulator + item.quantity,
         0
       );
-    };
+  };
+  
+const [page, setPage] = React.useState(0);
+const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+const handleChangePage = (event: unknown, newPage: number) => {
+  setPage(newPage);
+};
+
+const handleChangeRowsPerPage = (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  setRowsPerPage(+event.target.value);
+  setPage(0);
+};
+
   return (
     <div className="page">
       {cart.length > 0 ? (
         <>
-          <table border={1}>
-            <thead>
-              <tr>
-                <th align="left">Title</th>
-                <th align="left">Quantity</th>
-                <th align="left">Amount</th>
-                <th align="left">Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {cart.map((item) => {
-                return (
-                  <tr className="title-row">
-                    <td>
-                      <img src={item.images[0]} alt={item.title} />
-                      <h2>{item.title}</h2>
-                    </td>
-                    <td>
-                      <div className="counter">
-                        <button
-                          onClick={() => dispatch(decrementQuantity(item))}
-                        >
-                          <FaMinus />
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
-                          onClick={() => dispatch(incrementQuantity(item))}
-                        >
-                          <FaPlus />
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      $
-                      {new Intl.NumberFormat().format(
-                        item.price * item.quantity
-                      )}
-                    </td>
-                    <td>
-                      <button
-                        className=""
-                        onClick={() => dispatch(removeFromCart(item))}
+          <Box sx={{ display: {xs: "block", lg:"flex"}, marginTop: 10 }}>
+            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+              <TableContainer sx={{ maxHeight: 440 }}>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        sx={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
                       >
-                        delete item
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          <section className="subtotal">
-            <div>
-              <h3>Total items: {getTotalAmount()} </h3>
-            </div>
-            <div>
-              <h3>
-                Sub Total: ${new Intl.NumberFormat().format(getTotalPrice())}{" "}
-              </h3>
-            </div>
-            <div>
-              <h3>
-                Total: ${new Intl.NumberFormat().format(getTotalPrice())}{" "}
-              </h3>
-            </div>
-            <div>
-              <button>Proceed to checkout</button>
-            </div>
-          </section>
+                        Title
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
+                      >
+                        Quantity
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
+                      >
+                        Amount
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
+                      >
+                        Action
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {cart
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((item) => {
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={item.id}
+                          >
+                            <TableCell
+                              align="left"
+                              sx={{ display: "flex", gap: 3 }}
+                            >
+                              <img
+                                src={item.images[0]}
+                                alt={item.title}
+                                width={50}
+                              />
+                              <Typography variant="h5" sx={{fontSize:{xs: 15, md:20}}}>{item.title}</Typography> 
+                            </TableCell>
+                            <TableCell align="left">
+                              <div className="counter">
+                                <button
+                                  onClick={() =>
+                                    dispatch(decrementQuantity(item))
+                                  }
+                                >
+                                  <FaMinus />
+                                </button>
+                                <span>{item.quantity}</span>
+                                <button
+                                  onClick={() =>
+                                    dispatch(incrementQuantity(item))
+                                  }
+                                >
+                                  <FaPlus />
+                                </button>
+                              </div>
+                            </TableCell>
+                            <TableCell align="left">
+                              $
+                              {new Intl.NumberFormat().format(
+                                item.price * item.quantity
+                              )}
+                            </TableCell>
+                            <TableCell align="left">
+                              <Button
+                                sx={{
+                                  fontSize: 12,
+                                }}
+                                onClick={() => dispatch(removeFromCart(item))}
+                                color="warning"
+                                variant="contained"
+                              >
+                                Remove Item
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={cart.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Paper>
+            <section className="subtotal">
+              <div>
+                <h3>Total items: {getTotalAmount()} </h3>
+              </div>
+              <div>
+                <h3>
+                  Sub Total: ${new Intl.NumberFormat().format(getTotalPrice())}{" "}
+                </h3>
+              </div>
+              <div>
+                <h3>
+                  Total: ${new Intl.NumberFormat().format(getTotalPrice())}{" "}
+                </h3>
+              </div>
+              <div>
+                <Button variant="contained" color="warning">Checkout</Button>
+              </div>
+            </section>
+          </Box>
         </>
       ) : (
         <div className="empty-cart">
@@ -107,46 +189,7 @@ const Cart = () => {
         </div>
       )}
 
-      <section className="favorite">
-        <table border={1}>
-          <thead>
-            <tr>
-              <th align="left">Title</th>
-             
-              <th align="left">Amount</th>
-              <th align="left">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {savedItems.length  > 0 ? savedItems.map((item) => {
-              return (
-                <tr className="title-row">
-                  <td>
-                    <img src={item.images[0]} alt={item.title} />
-                    <h2>{item.title}</h2>
-                  </td>
-                
-                  <td>
-                    $
-                    {new Intl.NumberFormat().format(item.price)}
-                  </td>
-                  <td>
-                    <button
-                      className=""
-                      onClick={() => dispatch(removeItem(item))}
-                    >
-                      delete item
-                    </button>
-                  </td>
-                </tr>
-              );
-            }) : <tr>
-            <td colSpan={3} className="no-item"><h2>No item Saved</h2></td>
-            </tr>}
-          </tbody>
-        </table>
-      </section>
+   
     </div>
   );
 };

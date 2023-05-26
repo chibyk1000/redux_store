@@ -1,120 +1,41 @@
 // main.scss
 
-
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
 }
 
-.container {
-  display: flex;
+
+
+
+form {
+  width: 40dvw;
+  margin: auto;
+
+  box-shadow: 0 0 5px gray;
+  padding: 5rem;
+  h1 {
+    margin: 1rem 0;
+    text-align: center;
+  }
 
 }
 
-.sidebar {
-  width: 250px;
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0  1rem;
-  height: 100dvh;
-//   position: fixed;
-  overflow-y: hidden;
-
-
-  a{
-  
-    width: 100%;
-    display: block;
-    padding: 1rem .2rem;
-    border-radius: 5px;
-    &:hover{
-          background-color: white;
-    color: var(--primary-color) !important;
-    }
+table {
+  button {
+    margin: 0 0.4rem !important;
   }
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.dash-links {
+  display: flex;
+  width: 100%;
+  padding: 0.2rem;
+  border-radius: 5px;
+  transition: 0.5s ease-in-out;
 
-.sidebar li {
-  margin-bottom: 0.5rem;
-}
-
-.sidebar .logo:hover{
-background-color: transparent;
-}
-
-.sidebar a {
-  color: white;
-  text-decoration: none;
-}
-
-.dashboard {
-  flex: 1;
-  padding: 1rem ;
-  
- 
-
-}
-
-.dashboard h1 {
-  font-size: 2rem;
-  color: var(--primary-color);
-}
-
-.dashboard p {
-  font-size: 1.2rem;
-  color:var(--secondary-color);
-}
-
-
-form{
-    width: 40dvw;
-    margin: auto;
-
-    box-shadow: 0 0 5px gray;
-    padding: 5rem;
-    h1{
-        margin: 1rem 0;
-        text-align: center;
-    }
-    input, select, textarea{
-        display: block;
-        font-size: 1rem;
-
-        width: 100%;
-        margin: .5rem 0;
-        height: 2rem;
-
-    }
-
-    textarea{
-      height: 5rem;
-      resize: vertical;
-      padding-left: .3rem;
-    }
-
-    input{
-      padding-left: .3em;
-      width: calc(100% - .3em );
-    }
-
-    button{
-      float: right;
-      background-color: var(--primary-color);
-      color: white;
-      padding: .2rem .7rem;
-    }
-}
-
-table{
- 
-  button{
-    margin: 0 .4rem !important;
+  &:hover {
+    background-color: #ec6902;
   }
 }

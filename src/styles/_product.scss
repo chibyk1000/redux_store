@@ -1,4 +1,4 @@
-@use 'card';
+
 
 .product-container{
     display: grid;
@@ -9,5 +9,11 @@
 }
 
 .filter{
-    padding: 2rem;
+    // padding: 1rem;
+    margin: 1rem 0;
+    // display: flex;
+    // background-color: #FBA100;
+}
+.css-19kzrtu{
+    padding-top: 0 !important;
 }

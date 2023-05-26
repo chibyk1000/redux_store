@@ -2,14 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Product } from "../../types/Products";
 import { toast } from "react-toastify";
 const initialState: Product[] = [];
-const saveSlice = createSlice({
+const favoriteSlice = createSlice({
   name: "save",
   initialState,
   reducers: {
     saveItem: (state, action) => {
       const itemExists = state.find((item) => item?.id === action.payload.id);
       if (itemExists) {
-        toast.warn("item already saved");
+       const index = state.findIndex((item) => item.id === action.payload.id);
+       state.splice(index, 1);
+       toast.success("item removed");
       } else {
         toast.success("item saved");
         state.push({ ...action.payload });
@@ -33,6 +35,6 @@ export const {
 
   removeItem,
   updateCartAfterRefresh,
-} = saveSlice.actions;
+} = favoriteSlice.actions;
 
-export default saveSlice.reducer;
+export default favoriteSlice.reducer;

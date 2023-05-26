@@ -1,13 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Cart } from "../../types/Products";
+
 import axios, { AxiosError } from "axios";
 import { User } from "../../types/User";
 import { toast } from "react-toastify";
 
-interface Token{
-  access_token: string
-  refresh_token: string
-}
+
 
 interface UserDetails{
   isLoggedin: boolean,
@@ -16,7 +13,7 @@ interface UserDetails{
   }
 const initialState: UserDetails = {
   isLoggedin: false,
-  user: {name:"",avatar:"", email:"", password:"", role:""},
+  user: {name:"",avatar:"", email:"", password:"", role:"", id:0},
   users:[]
 }
 
@@ -94,6 +91,25 @@ export const getUser = createAsyncThunk('getUser', async () => {
 })
 
 
+export const updateUser = createAsyncThunk('updateUser', async (data:any) => {
+    try {
+      const result = await axios.put(
+        `https://api.escuelajs.co/api/v1/users/${data.id}`,
+        data
+      );
+      return result.data; // returned result would be inside action.payload
+    } catch (e) {
+      const error = e as AxiosError | any;
+      console.log(e);
+
+      if (error.request) {
+        toast.error(error.response?.data?.message);
+        console.log("error in request: ", error.request);
+      } else {
+        console.log(error.response?.data);
+      }
+    }
+})
 
 
 export const userSlice = createSlice({
@@ -115,6 +131,9 @@ export const userSlice = createSlice({
           }
         }).addCase(getUser.fulfilled, (state, action) => {
           state.user = action.payload as any
+        }).addCase(updateUser.fulfilled, (state, action) => { 
+          toast.success("profile update");
+          window.location.href = ""
         })
     }
 })

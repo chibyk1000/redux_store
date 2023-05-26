@@ -1,16 +1,38 @@
-import {PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { Category, Product } from "../../types/Products";
+import {  Product } from "../../types/Products";
 import axios, {AxiosError} from "axios";
 import { toast } from "react-toastify";
 
 
-
+interface Filter{
+  categoryId :string
+  price_min :string
+  price_max: string
+  title:string
+}
 
 export const fetchAllProducts = createAsyncThunk("fetchProducts", async () => {
   try {
     const result = await axios.get<Product[]>(
       "https://api.escuelajs.co/api/v1/products"
+    );
+    
+    return result.data; // returned result would be inside action.payload
+  } catch (e) {
+    const error = e as AxiosError | any;
+    if (error.request) {
+        toast.error(error.response?.data?.message);
+      console.log("error in request: ", error.request);
+    } else {
+      console.log(error.response?.data);
+    }
+  }
+});
+export const fetchProductsByTitle = createAsyncThunk("fetchProductByTitle", async (title:string) => {
+  try {
+    const result = await axios.get<Product[]>(
+      "https://api.escuelajs.co/api/v1/products/?title="+title
     );
     
     return result.data; // returned result would be inside action.payload
@@ -45,24 +67,49 @@ export const fetchSingleProduct = createAsyncThunk('getSingleProduct', async (id
     }
   }
 })
-
-
-export const fetchAllCategories = createAsyncThunk("getAllCategories", async () => {
-   try {
-     const result = await axios.get<Category[]>(
-       "https://api.escuelajs.co/api/v1/categories"
+export const fetchProductByCategory = createAsyncThunk('getProductByCategory', async (id:string) => {
+  try {
+     const result = await axios.get<Product[]>(
+       "https://api.escuelajs.co/api/v1/products/?categoryId="+id
      );
 
-     return result.data; // returned result would be inside action.payload
-   } catch (e) {
-     const error = e as AxiosError;
-     if (error.request) {
-       console.log("error in request: ", error.request);
-     } else {
-       console.log(error.response?.data);
-     }
-   }
+     return result.data;
+  } catch (e) {
+    console.log(e);
+    
+    const error = e as AxiosError | any;
+    if (error.request) {
+        toast.error(error.response?.data?.message);
+      console.log("error in request: ", error.request);
+    } else {
+      console.log(error.response?.data);
+    }
+  }
 })
+
+
+export const fetchProductByJointFilter = createAsyncThunk('getProductByJointFilter', async (data:Filter) => {
+  try {
+     const result = await axios.get<Product[]>(
+       `https://api.escuelajs.co/api/v1/products/?categoryId=${data.categoryId}&price_min=${data.price_min}&price_max=${data.price_max}&title=${data.title}`
+     );
+
+     return result.data;
+  } catch (e) {
+    console.log(e);
+    
+    const error = e as AxiosError | any;
+    if (error.request) {
+        toast.error(error.response?.data?.message);
+      console.log("error in request: ", error.request);
+    } else {
+      console.log(error.response?.data);
+    }
+  }
+})
+
+
+
 
 
 export const createNewProduct = createAsyncThunk('createNewProduct', async (data:Product) => {
@@ -106,6 +153,7 @@ export const updateProduct = createAsyncThunk(
 );
 
 
+
 export const deleteProduct = createAsyncThunk(
   "deleteProduct",
   async (id:string) => {
@@ -131,12 +179,12 @@ export const deleteProduct = createAsyncThunk(
 interface Products{
   products: Product[]
   product: Product| null
-  categories: Category[]
+
 }
 
 const initialState: Products = {
   product: { id: 0, category: { id: 0, name: "", creationAt: "", image: "", updatedAt: "" }, creationAt: "", description: "", images: [], price: 0, title: "", updatedAt: "" },
-  categories: [],
+  
   products:[]
 };
 
@@ -163,9 +211,20 @@ export const productsSlice = createSlice({
         if (a.price > b.price) return 1;
         return 0;
       });
+      
 
       state.products = sorted;
     },
+    filterProduct: (state, action) => {
+      console.log(action.payload);
+      
+      const foundItems = state.products.filter(p => p.title.toLowerCase().includes(action.payload))
+      if (foundItems.length > 0) {
+        state.products = foundItems
+      } else {
+        
+      }
+    }
   }, // list of methods to modify the state
   extraReducers: (build) => {
     build
@@ -179,24 +238,39 @@ export const productsSlice = createSlice({
           state.product = action.payload;
         }
       })
-      .addCase(fetchAllCategories.fulfilled, (state, action) => {
-        if (action.payload) {
-          state.categories = action.payload;
-        }
-      })
+   
       .addCase(createNewProduct.fulfilled, (state, action) => {
         if (action.payload) {
           toast.success("product created successfully");
+           window.location.href = "/admin";
         }
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
         if (action.payload) {
           toast.success("product updated");
+          window.location.href =""
         }
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         if (action.payload) {
           toast.success("product deleted");
+           window.location.href = "/admin";
+        }
+      }) .addCase(fetchProductByCategory.fulfilled, (state, action) => {
+        if (action.payload) {
+         state.products = action.payload;
+        }
+      })
+      .addCase(fetchProductByJointFilter.fulfilled, (state, action) => {
+        if (action.payload) {
+     
+         state.products = action.payload;
+        }
+      })
+      .addCase(fetchProductsByTitle.fulfilled, (state, action) => {
+        if (action.payload) {
+      
+         state.products = action.payload;
         }
       });
   },
@@ -204,5 +278,5 @@ export const productsSlice = createSlice({
 
 //productReducer: current state
 const productsReducer = productsSlice.reducer;
-export const {sortProductsByCategory, sortProductsByPrice} =  productsSlice.actions
+export const {sortProductsByCategory, sortProductsByPrice, filterProduct} =  productsSlice.actions
 export default productsReducer;
